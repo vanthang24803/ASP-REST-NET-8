@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.Data;
 using Api.Dtos.Stock;
+using Api.Helper;
 using Api.Interfaces;
 using Api.Mapper;
 using Api.Models;
@@ -20,16 +21,17 @@ namespace Api.Controller
         private readonly IStockRepository _stockRepo = stockRepo;
 
         [HttpGet]
-
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
-            var stocks = await _stockRepo.GetAllStocks();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var stocks = await _stockRepo.GetAllStocks(query);
 
             var stockDto = stocks.Select(s => s.ToStockDto());
 
             return Ok(stocks);
         }
-
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDetailStockById([FromRoute] string id)

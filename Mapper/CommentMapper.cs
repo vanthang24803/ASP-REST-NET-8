@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Dtos;
+using Api.Dtos.Comment;
 using Api.Models;
 
 namespace Api.Mapper
@@ -22,9 +23,24 @@ namespace Api.Mapper
             };
         }
 
-        // public static Comment ToCommentFromCreate()
-        // {
+        public static Comment ToCommentFromCreate(this CreateCommentDto commentDto, string stockId)
+        {
+            return new Comment
+            {
+                Title = commentDto.Title,
+                Content = commentDto.Content,
+                StockId = stockId
+            };
+        }
 
-        // }
+        public static Comment ToCommentFromUpdate(this UpdateCommentRequestDto commentDto, string stockId)
+        {
+            return new Comment
+            {
+                Title = commentDto.Title,
+                Content = commentDto.Content,
+                StockId = stockId
+            };
+        }
     }
 }
